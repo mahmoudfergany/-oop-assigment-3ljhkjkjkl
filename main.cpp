@@ -1,37 +1,46 @@
-//--------------------------------------- main.cpp
-
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "XO_Classes.h"
 #include "TicTacTeo.h"
 #include "BoardGame_Classes.h"
 #include "Pyramid_TicTac.h"
 #include "sus.h"
 #include "Four-in-a-row.h"
+#include " Misere.h"
+#include "Diamond.h"
 
 using namespace std;
 
 void menu() {
-    cout << "🎮 CS213 Board Games Menu 🎮" << endl;
-    cout << "There are many games , choose one please " << endl;
-    cout << "1-SUS" << endl;
-    cout << "2-Four-in-a-row" << endl;
-    cout << "3-5x5 Tic Tac Toe" << endl;
-    cout << "4-Word Tic Tac Toe" << endl;
-    cout << "5-Misère Tic Tac Toe" << endl;
-    cout << "6-Diamond Tic Tac Toe" << endl;
-    cout << "7-4x4 Tic Tac Toe" << endl;
-    cout << "8-Pyramid Tic Tac Toe" << endl;
-    cout << "9-Numerical Tic Tac Toe" << endl;
-    cout << "10-Obstacles Tic Tac Toe" << endl;
-    cout << "11-Infinity Tic Tac Toe" << endl;
-    cout << "12- X-O game" << endl;
-    cout << endl;
-    cout << "Enter the number of game you want to play : " << endl;
+    cout << "\n================================\n";
+    cout << "  CS213 Board Games Menu\n";
+    cout << "================================\n";
+    cout << "1. SUS\n";
+    cout << "2. Four-in-a-row\n";
+    cout << "3. 5x5 Tic Tac Toe\n";
+    cout << "4. Word Tic Tac Toe\n";
+    cout << "5. Misere Tic Tac Toe\n";
+    cout << "6. Diamond Tic Tac Toe\n";
+    cout << "7. 4x4 Tic Tac Toe\n";
+    cout << "8. Pyramid Tic Tac Toe\n";
+    cout << "9. Numerical Tic Tac Toe\n";
+    cout << "10. Obstacles Tic Tac Toe\n";
+    cout << "11. Infinity Tic Tac Toe\n";
+    cout << "12. X-O Game\n";
+    cout << "0. Exit\n";
+    cout << "================================\n";
+    cout << "Enter your choice: ";
 }
 
 void process() {
     int number_of_play;
     cin >> number_of_play;
+
+    if (number_of_play == 0) {
+        cout << "Thanks for playing!\n";
+        return;
+    }
 
     if (number_of_play == 1) {
         sus_board board;
@@ -102,7 +111,74 @@ void process() {
             delete set_of_players[i];
         }
     }
+    else if (number_of_play == 5) {
+        Misere_Board board;
+        Misere_UI ui(&board);
 
+        Player<char>* players[2];
+        vector<Player<char>*> set_of_players;
+
+        for (int i = 0; i < 2; i++) {
+            int type;
+            string name;
+            cout << "Enter player" << i + 1 << " name :" << endl;
+            cin >> name;
+            cout << "Enter the type of player " << i + 1 << ": \n 1-HUMAN \n 2-COMPUTER : ";
+            cin >> type;
+            Player<char>* p;
+            if (type == 1) {
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::HUMAN);
+            }
+            else if (type == 2) {
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::COMPUTER);
+            }
+            set_of_players.push_back(p);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            players[i] = set_of_players[i];
+        }
+
+        GameManager<char> gm(&board, players, &ui);
+        gm.run();
+        for (int i = 0; i < 2; i++) {
+            delete set_of_players[i];
+        }
+    }
+    else if (number_of_play == 6) {
+        Diamond_Board board;
+        Diamond_UI ui(&board);
+
+        Player<char>* players[2];
+        vector<Player<char>*> set_of_players;
+
+        for (int i = 0; i < 2; i++) {
+            int type;
+            string name;
+            cout << "Enter player" << i + 1 << " name :" << endl;
+            cin >> name;
+            cout << "Enter the type of player " << i + 1 << ": \n 1-HUMAN \n 2-COMPUTER : ";
+            cin >> type;
+            Player<char>* p;
+            if (type == 1) {
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::HUMAN);
+            }
+            else if (type == 2) {
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::COMPUTER);
+            }
+            set_of_players.push_back(p);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            players[i] = set_of_players[i];
+        }
+
+        GameManager<char> gm(&board, players, &ui);
+        gm.run();
+        for (int i = 0; i < 2; i++) {
+            delete set_of_players[i];
+        }
+    }
     else if (number_of_play == 7) {
         TicTac_board board;
         TicTac_UI ui(&board);
@@ -194,12 +270,18 @@ void process() {
         delete p1;
         delete p2;
     }
+    else {
+        cout << "Game not implemented yet!\n";
+    }
 }
 
-
-
 int main() {
+
+    srand(static_cast<unsigned int>(time(0)));
+   
+    
     menu();
     process();
+
     return 0;
 }

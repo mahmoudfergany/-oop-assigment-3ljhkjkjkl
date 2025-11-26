@@ -189,7 +189,7 @@ Move<char>* Py_TicTac_UI::get_move(Player<char>* player) {
         cout << "Computer chooses " << x << " & " << y;
     }
 
-    return new Move(x,y,player->get_symbol());
+    return new Move<char>(x, y, player->get_symbol());
 }
 
 Py_TicTac_UI::~Py_TicTac_UI() {
