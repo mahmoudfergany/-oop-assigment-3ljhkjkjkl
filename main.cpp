@@ -5,10 +5,12 @@
 #include "TicTacTeo.h"
 #include "BoardGame_Classes.h"
 #include "Pyramid_TicTac.h"
+#include "sus.h"
+#include "Four-in-a-row.h"
 
 using namespace std;
 
-void menu () {
+void menu() {
     cout << "🎮 CS213 Board Games Menu 🎮" << endl;
     cout << "There are many games , choose one please " << endl;
     cout << "1-SUS" << endl;
@@ -31,7 +33,77 @@ void process() {
     int number_of_play;
     cin >> number_of_play;
 
-    if (number_of_play == 7) {
+    if (number_of_play == 1) {
+        sus_board board;
+        sus_UI ui(&board);
+
+        Player<char>* players[2];
+        vector<Player<char>*> set_of_players;
+
+        for (int i = 0; i < 2; i++) {
+            int type;
+            string name;
+            cout << "Enter player" << i + 1 << " name :" << endl;
+            cin >> name;
+            cout << "Enter the type of player " << i + 1 << ": \n 1-HUMAN \n 2-COMPUTER : ";
+            cin >> type;
+            Player<char>* p;
+            if (type == 1) {
+                p = ui.create_player(name, i == 0 ? 'S' : 'U', PlayerType::HUMAN);
+            }
+            else if (type == 2) {
+                p = ui.create_player(name, i == 0 ? 'S' : 'U', PlayerType::COMPUTER);
+            }
+            set_of_players.push_back(p);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            players[i] = set_of_players[i];
+        }
+
+        GameManager<char> gm(&board, players, &ui);
+        gm.run();
+        for (int i = 0; i < 2; i++) {
+            delete set_of_players[i];
+        }
+    }
+
+    else if (number_of_play == 2) {
+        Four_in_a_row_board board;
+        Four_in_a_row_UI ui(&board);
+
+        Player<char>* players[2];
+        vector<Player<char>*> set_of_players;
+
+        for (int i = 0; i < 2; i++) {
+            int type;
+            string name;
+            cout << "Enter player" << i + 1 << " name :" << endl;
+            cin >> name;
+            cout << "Enter the type of player " << i + 1 << ": \n 1-HUMAN \n 2-COMPUTER : ";
+            cin >> type;
+            Player<char>* p;
+            if (type == 1) {
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::HUMAN);
+            }
+            else if (type == 2) {
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::COMPUTER);
+            }
+            set_of_players.push_back(p);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            players[i] = set_of_players[i];
+        }
+
+        GameManager<char> gm(&board, players, &ui);
+        gm.run();
+        for (int i = 0; i < 2; i++) {
+            delete set_of_players[i];
+        }
+    }
+
+    else if (number_of_play == 7) {
         TicTac_board board;
         TicTac_UI ui(&board);
 
@@ -41,16 +113,16 @@ void process() {
         for (int i = 0; i < 2; i++) {
             int type;
             string name;
-            cout << "Enter player" << i+1 << " name :" <<endl;
+            cout << "Enter player" << i + 1 << " name :" << endl;
             cin >> name;
-            cout << "Enter the type of player " << i + 1 <<": \n 1-HUMAN \n 2-COMPUTER : ";
+            cout << "Enter the type of player " << i + 1 << ": \n 1-HUMAN \n 2-COMPUTER : ";
             cin >> type;
             Player<char>* p;
             if (type == 1) {
-                p = ui.create_player(name,i==0 ? 'X' : 'O',PlayerType::HUMAN);
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::HUMAN);
             }
             else if (type == 2) {
-                p = ui.create_player(name,i==0 ? 'X' : 'O',PlayerType::COMPUTER);
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::COMPUTER);
             }
             set_of_players.push_back(p);
         }
@@ -76,16 +148,16 @@ void process() {
         for (int i = 0; i < 2; i++) {
             int type;
             string name;
-            cout << "Enter player" << i+1 << " name :" <<endl;
+            cout << "Enter player" << i + 1 << " name :" << endl;
             cin >> name;
-            cout << "Enter the type of player " << i + 1 <<": \n 1-HUMAN \n 2-COMPUTER : ";
+            cout << "Enter the type of player " << i + 1 << ": \n 1-HUMAN \n 2-COMPUTER : ";
             cin >> type;
             Player<char>* p;
             if (type == 1) {
-                p = ui.create_player(name,i==0 ? 'X' : 'O',PlayerType::HUMAN);
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::HUMAN);
             }
             else if (type == 2) {
-                p = ui.create_player(name,i==0 ? 'X' : 'O',PlayerType::COMPUTER);
+                p = ui.create_player(name, i == 0 ? 'X' : 'O', PlayerType::COMPUTER);
             }
             set_of_players.push_back(p);
         }
@@ -100,7 +172,6 @@ void process() {
             delete set_of_players[i];
         }
     }
-
     else if (number_of_play == 12) {
         X_O_Board board;
 
@@ -115,7 +186,7 @@ void process() {
         Player<char>* p1 = ui.create_player(name1, 'X', PlayerType::HUMAN);
         Player<char>* p2 = ui.create_player(name2, 'O', PlayerType::HUMAN);
 
-        Player<char>* players[2] = {p1, p2};
+        Player<char>* players[2] = { p1, p2 };
         GameManager<char> gm(&board, players, &ui);
 
         gm.run();
@@ -124,6 +195,8 @@ void process() {
         delete p2;
     }
 }
+
+
 
 int main() {
     menu();
