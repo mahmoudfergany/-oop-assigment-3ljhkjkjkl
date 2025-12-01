@@ -7,8 +7,9 @@
 #include "Pyramid_TicTac.h"
 #include "sus.h"
 #include "Four-in-a-row.h"
-#include " Misere.h"
+#include "Misere.h"
 #include "Diamond.h"
+#include "Numerical Tic-Tac.h"
 
 using namespace std;
 
@@ -248,9 +249,42 @@ void process() {
             delete set_of_players[i];
         }
     }
+    else if (number_of_play == 9) {
+        num_TicTac_board board;
+        num_TicTac_UI ui;
+
+        Player<int>* players[2];
+        vector<Player<int>*> set_of_players;
+
+        for (int i = 0; i < 2; i++) {
+            int type;
+            string name;
+            cout << "Enter player" << i + 1 << " name :" << endl;
+            cin >> name;
+            cout << "Enter the type of player " << i + 1 << ": \n 1-HUMAN \n 2-COMPUTER : ";
+            cin >> type;
+            Player<int>* p;
+            if (type == 1) {
+                p = ui.create_player(name, i == 0 ? 1 : 2, PlayerType::HUMAN);
+            }
+            else if (type == 2) {
+                p = ui.create_player(name, i == 0 ? 3 : 4, PlayerType::COMPUTER);
+            }
+            set_of_players.push_back(p);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            players[i] = set_of_players[i];
+        }
+
+        GameManager<int> gm(&board, players, &ui);
+        gm.run();
+        for (int i = 0; i < 2; i++) {
+            delete set_of_players[i];
+        }
+    }
     else if (number_of_play == 12) {
         X_O_Board board;
-
         XO_UI ui;
 
         std::string name1, name2;
@@ -277,9 +311,8 @@ void process() {
 
 int main() {
 
-    srand(static_cast<unsigned int>(time(0)));
-   
-    
+    //srand(static_cast<unsigned int>(time(0)));
+
     menu();
     process();
 
