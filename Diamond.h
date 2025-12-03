@@ -1,6 +1,6 @@
 #ifndef DIAMOND_H
 #define DIAMOND_H
-
+//ksdjdflsjldjljflsjfjsdljflsjfdjk
 #include "BoardGame_Classes.h"
 #include <set>
 using namespace std;
